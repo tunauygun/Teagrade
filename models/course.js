@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const CourseSchema = new Schema({
     code: String,
     name: String,
+    image: String,
     students: [
         {
             type: Schema.Types.ObjectId,

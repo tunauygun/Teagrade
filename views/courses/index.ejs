@@ -1,10 +1,19 @@
 <% layout('layouts/boilerplate')%>
 <h1> All Courses</h1>
 <div>
-    <a href="/courses/new">Create New Course</a>
+    <a class="btn btn-primary mt-4 mb-4" href="/courses/new">Create New Course</a>
 </div>
-<ul>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
     <% for (let course of courses){ %>
-        <li> <a href="/courses/<%=course._id%>"> <%= course.name %></a> </li>
+    <div class="col">
+      <div class="card h-100">
+        <img src=<%= course.image %> class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><%= course.code %></h5>
+          <a href="/courses/<%=course._id%>" class="stretched-link card-text" style="text-decoration: none; color: inherit;"> <%= course.name %></a>
+        </div>
+      </div>
+    </div>
     <% } %>
-</ul>
+  </div>
