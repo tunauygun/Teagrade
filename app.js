@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const ejsMate = require('ejs-mate');
+const methodOverride = require('method-override')
 const Course = require('./models/course');
+
 
 mongoose.connect('mongodb://localhost:27017/teagrade');
 
@@ -13,9 +16,11 @@ db.once("open", () => {
 
 const app = express();
 
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -39,6 +44,18 @@ app.post('/courses', async (req, res) => {
 app.get('/courses/:id', async (req, res) => {
     const course = await Course.findById(req.params.id);
     res.render('courses/show', {course});
+})
+
+app.get('/courses/:id/edit', async (req, res) => {
+    const course = await Course.findById(req.params.id);
+    res.render('courses/edit', {course});
+})
+
+app.put('/courses/:id', async (req, res) => {
+    const {id} = req.params;
+    const course = await Course.findByIdAndUpdate(id, {...req.body.course})
+    res.redirect(`/courses/${course._id}`);
+
 })
 
 app.get('/createcourse', async (req, res) => {
