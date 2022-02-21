@@ -1,19 +1,28 @@
 <% layout('layouts/boilerplate')%>
 <div class="row">
     <h1 class="text-center">Create New Course</h1>
-    <div class="col-6 offset-3">
-        <form action="/courses" method="POST">
+    <div class="col-lg-6 offset-lg-3">
+        <form action="/courses" method="POST" novalidate class="needs-validation">
             <div class="mb-3">
                 <label class="form-label" for="courseCode">Course Code</label>
-                <input class="form-control" type="text" id="courseCode" name="course[code]">
+                <input class="form-control" type="text" id="courseCode" name="course[code]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="courseName">Course Name</label>
-                <input class="form-control" type="text" id="courseName" name="course[name]">
+                <input class="form-control" type="text" id="courseName" name="course[name]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="courseImg">Image Url</label>
-                <input class="form-control" type="text" id="courseImg" name="course[image]">
+                <input class="form-control" type="text" id="courseImg" name="course[image]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">Create Course</button>
@@ -22,3 +31,4 @@
         </form>
     </div>
 </div>
+
