@@ -5,9 +5,9 @@ const path = require('path');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override')
 const Course = require('./models/course');
-const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const { courseSchema } = require('./schemas');
+
+const courses = require('./routes/courses');
 
 
 mongoose.connect('mongodb://localhost:27017/teagrade');
@@ -26,50 +26,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-const validateCourse = (req, res, next) => {
-    const { error } = courseSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+app.use('/courses', courses)
 
 app.get('/', (req, res) => {
     res.render('home');
-})
-
-app.get('/courses', async (req, res) => {
-    const courses = await Course.find({});
-    res.render('courses/index', { courses });
-})
-
-app.get('/courses/new', (req, res) => {
-    res.render('courses/new');
-})
-
-app.post('/courses', validateCourse, catchAsync(async (req, res) => {
-    const course = new Course(req.body.course);
-    await course.save();
-    res.redirect(`/courses/${course._id}`)
-}))
-
-app.get('/courses/:id', catchAsync(async (req, res) => {
-    const course = await Course.findById(req.params.id);
-    res.render('courses/show', { course });
-}))
-
-app.get('/courses/:id/edit', async (req, res) => {
-    const course = await Course.findById(req.params.id);
-    res.render('courses/edit', { course });
-})
-
-app.put('/courses/:id', validateCourse, async (req, res) => {
-    const { id } = req.params;
-    const course = await Course.findByIdAndUpdate(id, { ...req.body.course })
-    res.redirect(`/courses/${course._id}`);
-
 })
 
 app.all('*', (req, res, next) => {
@@ -114,9 +74,7 @@ app.get('/createcourse', async (req, res) => {
     // await course7.save();
     // await course8.save();
     // await course9.save();
-
     res.redirect('/courses');
-
 })
 
 app.listen(3000, () => {
