@@ -1,31 +1,20 @@
 const express = require('express');
 const Course = require('../models/course');
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const { courseSchema } = require('../schemas');
+const {isLoggedIn, validateCourse} = require('../middleware');
 
 const router = express.Router();
-
-const validateCourse = (req, res, next) => {
-    const { error } = courseSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 router.get('/', async (req, res) => {
     const courses = await Course.find({});
     res.render('courses/index', { courses });
 })
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('courses/new');
 })
 
-router.post('/', validateCourse, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateCourse, catchAsync(async (req, res) => {
     const course = new Course(req.body.course);
     await course.save();
     req.flash('success', 'Successfully created a new course!');
