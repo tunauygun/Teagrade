@@ -12,6 +12,8 @@ const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const flash = require('connect-flash');
 const courseRoutes = require('./routes/courses');
+const studentRoutes = require('./routes/students');
+const testRoutes = require('./routes/tests');
 const userRoutes = require('./routes/user');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -60,22 +62,14 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use('/courses/:id/students', studentRoutes)
+app.use('/courses/:id/tests', testRoutes)
 app.use('/courses', courseRoutes);
 app.use('/', userRoutes);
 
 app.get('/', (req, res) => {
     res.render('home');
 })
-
-app.all('*', (req, res, next) => {
-    next(new ExpressError("Page Not Found", 404));
-})
-
-app.use((err, req, res, next) => {
-    const { statusCode = 500 } = err
-    if (!err.message) err.message = "Something went wrong!"
-    res.render('error', { err });
-});
 
 app.get('/createcourse', async (req, res) => {
     const url = 'https://source.unsplash.com/collection/1368747/400x300';
@@ -100,17 +94,39 @@ app.get('/createcourse', async (req, res) => {
     const course9 = await new Course({ code: "ENG4U", name: "English 12", image: response.request.res.responseUrl });
 
     // await Course.deleteMany({});
-    // await course1.save();
-    // await course2.save();
-    // await course3.save();
-    // await course4.save();
-    // await course5.save();
-    // await course6.save();
-    // await course7.save();
-    // await course8.save();
-    // await course9.save();
+    await course1.save();
+    await course2.save();
+    await course3.save();
+    await course4.save();
+    await course5.save();
+    await course6.save();
+    await course7.save();
+    await course8.save();
+    await course9.save();
+
+    req.user.courses.push(course1);
+    req.user.courses.push(course2);
+    req.user.courses.push(course3);
+    req.user.courses.push(course4);
+    req.user.courses.push(course5);
+    req.user.courses.push(course6);
+    req.user.courses.push(course7);
+    req.user.courses.push(course8);
+    req.user.courses.push(course9);
+    await req.user.save();
+    
     res.redirect('/courses');
 })
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError("Page Not Found", 404));
+})
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err
+    if (!err.message) err.message = "Something went wrong!"
+    res.render('error', { err });
+});
 
 app.listen(3000, () => {
     console.log('Serving on port 3000');

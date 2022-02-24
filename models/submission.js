@@ -13,7 +13,7 @@ const SubmissionSchema = new Schema({
     test: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: 'test'
+        ref: 'Test'
     },
     resultsArray: [{
         required: true,

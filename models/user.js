@@ -7,8 +7,15 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    courses: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Course'
+        }
+    ]
 });
+
 UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', UserSchema);

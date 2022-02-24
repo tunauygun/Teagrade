@@ -16,7 +16,7 @@ const StudentSchema = new Schema({
     },
     submissions: [{
         type: Schema.Types.ObjectId,
-        ref: 'submission'
+        ref: 'Submission'
     }]
 
 });

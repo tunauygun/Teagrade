@@ -13,7 +13,7 @@ const TestSchema = new Schema({
     class: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: 'class'
+        ref: 'Class'
     },
     asnwers: {
         required: true,
