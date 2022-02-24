@@ -7,3 +7,11 @@ module.exports.courseSchema = Joi.object({
         image: Joi.string().required()
     }).required()
 })
+
+module.exports.studentSchema = Joi.object({
+    student: Joi.object({
+        firstname: Joi.string().required(),
+        lastname: Joi.string().required(),
+        number: Joi.number().required().min(0)
+    }).required()
+})

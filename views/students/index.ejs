@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate')%>
+
+<ul class="nav justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="/courses/<%=courseId%>">Overview</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/courses/<%=courseId%>/tests">Tests</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link active" href="/courses/<%=courseId%>/students">Students</a>
+  </li>
+</ul>
+
+<a class="btn btn-primary my-5" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
+    <% for (let student of students){ %>
+
+    <div class="card border-primary w-100">
+      <div class="card-body">
+        <h5 class="card-title"><%= student.firstname %> <%= student.lastname %></h5>
+        <p class="card-text">Student #: <%= student.number %></p>
+      </div>
+    </div>
+
+    <% } %>
+  </div>
+

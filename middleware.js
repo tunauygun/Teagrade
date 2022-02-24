@@ -1,5 +1,7 @@
 const ExpressError = require('./utils/ExpressError');
-const { courseSchema } = require('./schemas');
+const Course = require('./models/course');
+const Student = require('./models/course');
+const {courseSchema, studentSchema} = require('./schemas.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if(!req.isAuthenticated()){
@@ -12,6 +14,16 @@ module.exports.isLoggedIn = (req, res, next) => {
 
 module.exports.validateCourse = (req, res, next) => {
     const { error } = courseSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+module.exports.validateStudent = (req, res, next) => {
+    const { error } = studentSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
