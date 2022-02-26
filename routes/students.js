@@ -30,4 +30,6 @@ router.post('/', isLoggedIn, validateStudent, catchAsync(async (req, res) => {
     res.redirect(`/courses/${course._id}/students`)
 }));
 
+
+
 module.exports = router;
