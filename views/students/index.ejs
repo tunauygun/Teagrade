@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate')%>
 
-<ul class="nav justify-content-center">
+<ul class="nav justify-content-center border-bottom">
   <li class="nav-item">
     <a class="nav-link" aria-current="page" href="/courses/<%=courseId%>">Overview</a>
   </li>
@@ -12,7 +12,7 @@
   </li>
 </ul>
 
-<a class="btn btn-primary my-5" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
+<a class="btn btn-primary my-4" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
 
 <% for (let student of students){ %>
 <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">

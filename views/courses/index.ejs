@@ -8,7 +8,7 @@
     <% for (let course of courses){ %>
     <div class="col">
       <div class="card h-100">
-        <img src=<%= course.image %> class="card-img-top" alt="...">
+        <img src=<%= course.image %> class="card-img-top img-fluid" alt="...">
         <div class="card-body">
           <h5 class="card-title"><%= course.code %></h5>
           <a href="/courses/<%=course._id%>" class="stretched-link card-text" style="text-decoration: none; color: inherit;"> <%= course.name %></a>
