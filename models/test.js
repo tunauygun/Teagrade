@@ -18,7 +18,11 @@ const TestSchema = new Schema({
     asnwers: {
         required: true,
         type: [Number]
-    }
+    },
+    submissions: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Submission'
+    }]
 
 });
 
