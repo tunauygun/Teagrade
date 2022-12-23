@@ -12,7 +12,8 @@ const StudentSchema = new Schema({
     },
     number: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     submissions: [{
         type: Schema.Types.ObjectId,

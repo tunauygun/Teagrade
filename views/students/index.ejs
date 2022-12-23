@@ -14,18 +14,23 @@
 
 <a class="btn btn-primary my-4" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
 
+<% if (students.length > 0){ %>
+
 <% for (let student of students){ %>
-<div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
-  <div class="row mx-2 my-3">
-      <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
-        <h5 class=""><%= student.firstname %> <%= student.lastname %></h5>
-        <p class="">Student #: <%= student.number %></p>
+    <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
+      <div class="row mx-2 my-3">
+          <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
+              <a style="display:block" href="/courses/<%=courseId%>/students/<%= student._id%>">
+            <h5 class=""><%= student.firstname %> <%= student.lastname %></h5>
+              </a>
+            <p class="">Student #: <%= student.number %></p>
+          </div>
+          <div class="my-auto col">
+            <a class="btn btn-warning my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id%>/edit">Edit</a>
+            <a class="btn btn-danger mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id %>">Delete</a>
+          </div>
       </div>
-      <div class="my-auto col">
-        <a class="btn btn-warning my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id%>/edit">Edit</a>
-        <a class="btn btn-danger mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id %>">Delete</a>
-      </div>
-  </div>
-</div>
+    </div>
+<% } %>
 
 <% } %>

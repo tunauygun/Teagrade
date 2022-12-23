@@ -18,6 +18,35 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('students/new', {courseId});
 });
 
+router.get('/:studentId/edit', async (req, res) => {
+    const student = await Student.findById(req.params.studentId);
+    if(!student){
+        req.flash('error', 'Cannot find the requested course!');
+        return res.redirect('/courses');
+    }
+    const {id, studentId} = req.params
+    // console.log(req.p1arams)
+    // console.dir(student._id)
+    res.render('students/edit', {student, id, studentId});
+})
+
+router.put('/:studentId', validateStudent, async (req, res) => {
+    const {id , studentId} = req.params;
+    const student = await Student.findByIdAndUpdate(studentId, {...req.body.student})
+    req.flash('success', 'Successfully updated student!');
+    // res.redirect(`/courses/${id}/students/${studentId}`);
+    res.redirect(`/courses/${id}/students/`);
+})
+
+router.get('/:studentId', async (req, res) => {
+    const student = await Student.findById(req.params.studentId);
+    if(!student){
+        req.flash('error', 'Cannot find the requested course!');
+        return res.redirect(`/courses/${id}/students/`);
+    }
+    res.render('students/show', {student});
+})
+
 router.post('/', isLoggedIn, validateStudent, catchAsync(async (req, res) => {
     //res.send(req.body);
     const {firstname, lastname, number} = req.body.student;
@@ -27,7 +56,7 @@ router.post('/', isLoggedIn, validateStudent, catchAsync(async (req, res) => {
     course.students.push(student);
     await course.save();
     req.flash('success', `Successfully added ${student.firstname} to the course!`);
-    res.redirect(`/courses/${course._id}/students`)
+    res.redirect(`/courses/${course._id}/students`);
 }));
 
 
