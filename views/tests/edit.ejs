@@ -1,1 +1,95 @@
 <% layout('layouts/boilerplate')%>
+<div class="row mt-5">
+    <h1 class="text-center">Edit Test</h1>
+    <div class="col-lg-6 offset-lg-3">
+        <form action="/courses/<%=id%>/tests/<%=test._id%>?_method=PUT" method="POST" novalidate class="needs-validation">
+
+            <label class="form-label mt-3" for="name">Test Name</label>
+            <input class="form-control" type="text" id="name" name="test[name]" value="<%=test.name%>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+
+            <label for="customRange2" class="form-label mt-3">Number of Questions: <output id="questionNumberOutputId"><%=test.answerKey.length%></output></label>
+            <input class="form-range mb-3" type="range" id="questionNumberInputId" value=<%=test.answerKey.length%> min="1" max="25" required onchange="questionNumberInputHandler()" questionNumberInputHandler oninput=questionNumberInputHandler >
+
+            <label class="form-label mt-3">Answer Key</label>
+            <p> Enter the answer key for the test questions below </p>
+            <div id="answerKey" class="my-3">
+                <%for(let i = 1; i<=test.answerKey.length; i++){%>
+                <div id="q<%=i%>" class="my-2" role="group" name="answerKey[<%=i%>]">
+                    <div class="row">
+                        <div class="col col-1">
+                            <p style="width:100px" class="d-inline align-middle"><%=i%></p>
+                        </div>
+                        <div class="col col-11">
+                            <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>A" value="A" autocomplete="off" required <%=test.answerKey[i-1] === "A"? "checked": ""%>>
+                            <label class="btn btn-outline-primary" for="q<%=i%>A">A</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>B" value="B" autocomplete="off" required <%=test.answerKey[i-1] === "B"? "checked": ""%>>
+                            <label class="btn btn-outline-primary" for="q<%=i%>B">B</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>C" value="C" autocomplete="off" required <%=test.answerKey[i-1] === "C"? "checked": ""%>>
+                            <label class="btn btn-outline-primary" for="q<%=i%>C">C</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>D" value="D" autocomplete="off" required <%=test.answerKey[i-1] === "D"? "checked": ""%>>
+                            <label class="btn btn-outline-primary" for="q<%=i%>D">D</label>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-success">Update Test</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function questionNumberInputHandler() {
+        let answerDiv = document.getElementById('answerKey');
+        let questionCount = document.getElementById("questionNumberInputId").value
+        document.getElementById('questionNumberOutputId').value = questionCount;
+        if(answerDiv.childElementCount < questionCount) {
+            for (let i = answerDiv.childElementCount + 1; i <= questionCount; i++) {
+
+                const questionDiv = document.createElement('div');
+                questionDiv.id = "q"+i;
+                questionDiv.className = "my-2";
+                questionDiv.role = "group"
+
+                questionDiv.innerHTML = `
+                    <div class="row">
+                        <div class="col col-1">
+                            <p style="width:100px" class="d-inline align-middle">${i}</p>
+                        </div>
+                        <div class="col col-11">
+                            <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}A" value="A" autocomplete="off" required>
+                            <label class="btn btn-outline-primary" for="q${i}A">A</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}B" value="B" autocomplete="off" required>
+                            <label class="btn btn-outline-primary" for="q${i}B">B</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}C" value="C" autocomplete="off" required>
+                            <label class="btn btn-outline-primary" for="q${i}C">C</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}D" value="D" autocomplete="off" required>
+                            <label class="btn btn-outline-primary" for="q${i}D">D</label>
+                        </div>
+                    </div>
+                  `;
+
+                answerDiv.appendChild(questionDiv);
+            }
+        }else if(answerDiv.childElementCount > questionCount) {
+            for (let i = answerDiv.childElementCount; i > questionCount; i--) {
+                console.log("removing" + i)
+                document.getElementById("q"+i).remove();
+            }
+        }
+
+    }
+</script>

@@ -1,1 +1,20 @@
 <% layout('layouts/boilerplate')%>
+<h1 class="my-5"> Test Information</h1>
+<h5>Name: <span><%= test.name %></span></h5>
+<h5>Answer Key: <span><%= test.answersString %></span></h5>
+<h5>Number of Submissions: <span><%= test.submissions.length %></span></h5>
+
+
+<% for (let submission of test.submissions){ %>
+    <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
+        <div class="row mx-2 my-3">
+            <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
+                <h5 class="">Student: <%= submission.student.firstname %></h5>
+                <p class="">Score: <%= submission.score %></p>
+            </div>
+            <div class="my-auto col">
+                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/submissions/<%= submission._id%>/show">Details</a>
+            </div>
+        </div>
+    </div>
+<% } %>

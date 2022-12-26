@@ -6,18 +6,14 @@ const TestSchema = new Schema({
         type: String,
         required: true
     },
-    data: {
-        type: String,
-        required: true
-    },
-    class: {
+    course: {
         required: true,
         type: Schema.Types.ObjectId,
         ref: 'Class'
     },
-    asnwers: {
+    answerKey: {
         required: true,
-        type: [Number]
+        type: [String]
     },
     submissions: [{
         type: Schema.Types.ObjectId,
