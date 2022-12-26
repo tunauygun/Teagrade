@@ -39,12 +39,13 @@ router.put('/:studentId', validateStudent, async (req, res) => {
 })
 
 router.get('/:studentId', async (req, res) => {
-    const student = await Student.findById(req.params.studentId);
+    const student = await Student.findById(req.params.studentId).populate('submissions');
     if(!student){
         req.flash('error', 'Cannot find the requested course!');
         return res.redirect(`/courses/${id}/students/`);
     }
-    res.render('students/show', {student});
+    const courseId = req.params.id;
+    res.render('students/show', {student, courseId});
 })
 
 router.post('/', isLoggedIn, validateStudent, catchAsync(async (req, res) => {

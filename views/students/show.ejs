@@ -10,12 +10,11 @@
     <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
         <div class="row mx-2 my-3">
             <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
-                <h5 class=""><%= student.firstname %> <%= student.lastname %></h5>
-                <p class="">Student #: <%= student.number %></p>
+                <h5 class="">Test Name: <%= submission.test.name %></h5>
+                <p class="">Score: <%= submission.score %></p>
             </div>
             <div class="my-auto col">
-                <a class="btn btn-warning my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id%>/edit">Edit</a>
-                <a class="btn btn-danger mx-auto d-block text-right" href="/courses/<%=courseId%>/students/<%= student._id %>">Delete</a>
+                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/submissions/<%= submission._id%>/show">Details</a>
             </div>
         </div>
     </div>

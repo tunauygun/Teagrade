@@ -12,7 +12,9 @@
   </li>
 </ul>
 
-<a class="btn btn-primary my-4" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
+<h1 class="my-4">All Students</h1>
+
+<a class="btn btn-primary mb-4" href="/courses/<%=courseId%>/students/new"> Add new Student </a>
 
 <% if (students.length > 0){ %>
 
@@ -21,7 +23,7 @@
       <div class="row mx-2 my-3">
           <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
               <a style="display:block" href="/courses/<%=courseId%>/students/<%= student._id%>">
-            <h5 class=""><%= student.firstname %> <%= student.lastname %></h5>
+            <h5 class="text-decoration-none"><%= student.firstname %> <%= student.lastname %></h5>
               </a>
             <p class="">Student #: <%= student.number %></p>
           </div>
