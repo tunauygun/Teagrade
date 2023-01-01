@@ -4,6 +4,19 @@
 <h5>Answer Key: <span><%= test.answersString %></span></h5>
 <h5>Number of Submissions: <span><%= test.submissions.length %></span></h5>
 
+<a class="btn btn-primary my-1 text-right" href="/courses/<%=courseId%>/tests/<%=test._id%>/submissions/new">Create New Submission</a>
+<div class="btn-group ms-2">
+    <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Manage Test
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/courses/<%=courseId%>/tests/<%= test._id%>/edit">Edit</a></li>
+        <form action="/courses/<%=courseId%>/tests/<%=test._id%>?_method=DELETE" method="POST" novalidate>
+            <button class="dropdown-item">Delete</button>
+        </form>
+    </ul>
+</div>
+
 
 <% for (let submission of test.submissions){ %>
     <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
@@ -13,7 +26,7 @@
                 <p class="">Score: <%= submission.score %></p>
             </div>
             <div class="my-auto col">
-                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/submissions/<%= submission._id%>/show">Details</a>
+                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/tests/<%=test._id%>/submissions/<%= submission._id%>">Details</a>
             </div>
         </div>
     </div>

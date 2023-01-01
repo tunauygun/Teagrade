@@ -13,7 +13,7 @@
   </ul>
 
   <h1 class="text-center my-3"> <%= course.name %> </h1>
-  <h2 class="text-muted text-center my-3"> <%= course.code %> </h1>
+  <h2 class="text-muted text-center my-3"> <%= course.code %> </h2>
 
 <div class="row mt-5">
     <div class="col-sm-6">
@@ -46,8 +46,10 @@
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/courses/<%=course._id%>/edit">Edit</a></li>
-              <li><a class="dropdown-item" href="#">Delete</a></li>
+                <form action="/courses/<%=course._id%>?_method=DELETE" method="POST" novalidate>
+                    <button class="dropdown-item">Delete</button>
+                </form>
             </ul>
-          </div>
+        </div>
     </div>
 </div>

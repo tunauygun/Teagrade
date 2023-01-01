@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Student = require('../models/student');
 const catchAsync = require('../utils/catchAsync');
 const {isLoggedIn, validateCourse, validateStudent} = require('../middleware');
+const {deleteStudent} = require("../utils/delete");
 
 const router = express.Router({mergeParams: true});
 
@@ -39,7 +40,10 @@ router.put('/:studentId', validateStudent, async (req, res) => {
 })
 
 router.get('/:studentId', async (req, res) => {
-    const student = await Student.findById(req.params.studentId).populate('submissions');
+    const student = await Student.findById(req.params.studentId).populate({
+        path: 'submissions',
+        populate: { path: 'test', model: 'Test'}
+    });
     if(!student){
         req.flash('error', 'Cannot find the requested course!');
         return res.redirect(`/courses/${id}/students/`);
@@ -59,6 +63,12 @@ router.post('/', isLoggedIn, validateStudent, catchAsync(async (req, res) => {
     req.flash('success', `Successfully added ${student.firstname} to the course!`);
     res.redirect(`/courses/${course._id}/students`);
 }));
+
+router.delete('/:studentId', async (req, res) => {
+    const {id:courseId, studentId} = req.params;
+    await deleteStudent(studentId);
+    res.redirect(`/courses/${courseId}/students`);
+})
 
 
 

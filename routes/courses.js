@@ -3,6 +3,7 @@ const Course = require('../models/course');
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
 const {isLoggedIn, validateCourse} = require('../middleware');
+const {deleteCourse} = require("../utils/delete");
 
 const router = express.Router();
 
@@ -47,8 +48,16 @@ router.put('/:id', validateCourse, async (req, res) => {
     const { id } = req.params;
     const course = await Course.findByIdAndUpdate(id, { ...req.body.course })
     req.flash('success', 'Successfully updated course!');
-    res.redirect(`/courses/${course._id}`);
+    res.redirect(`/courses/${id}`);
 
 })
+
+router.delete('/:id', async (req, res) => {
+    const {id} = req.params;
+    await deleteCourse(id);
+    res.redirect('/courses');
+})
+
+
 
 module.exports = router;

@@ -6,6 +6,7 @@ const {isLoggedIn, validateTest, validateStudent} = require('../middleware');
 const Test = require("../models/test");
 const Student = require("../models/student");
 const Submission = require("../models/submission");
+const {deleteTest} = require("../utils/delete");
 
 const router = express.Router({mergeParams: true});
 
@@ -33,7 +34,18 @@ router.post('/', isLoggedIn, validateTest, catchAsync(async (req, res) => {
 
 router.put('/:testId', validateTest, async (req, res) => {
     const {id , testId} = req.params;
-    const test = await Test.findByIdAndUpdate(testId, {...req.body.test})
+    const test = await Test.findByIdAndUpdate(testId, {...req.body.test}).populate({
+        path: 'submissions',
+        populate: { path: 'student', model: 'Student'}
+    });
+    for (let i = 0; i < test.submissions.length; i++) {
+        const student = test.submissions[i].student;
+        const studentAnswersArray = test.submissions[i].studentAnswersArray;
+        const submission = await Submission.findById(test.submissions[i]);
+        const resultsArray = studentAnswersArray.map((answer, index) => { return answer === test.answerKey[index]? 1 : 0});
+        const score = (resultsArray.reduce((partialSum, a) => partialSum + a, 0) / studentAnswersArray.length) * 100;
+        await Submission.findByIdAndUpdate(test.submissions[i]._id, {student, studentAnswersArray, test, resultsArray, score});
+    }
     req.flash('success', 'Successfully updated Test!');
     res.redirect(`/courses/${id}/tests/`);
 })
@@ -49,7 +61,10 @@ router.get('/:testId/edit', async (req, res) => {
 })
 
 router.get('/:testId', async (req, res) => {
-    const test = await Test.findById(req.params.testId).populate('submissions');
+    const test = await Test.findById(req.params.testId).populate({
+        path: 'submissions',
+        populate: { path: 'student', model: 'Student'}
+    });
     const courseId = req.params.id;
     if(!test){
         req.flash('error', 'Cannot find the requested test!');
@@ -61,6 +76,12 @@ router.get('/:testId', async (req, res) => {
     }
     test.answersString = answers;
     res.render('tests/show', {test, courseId});
+})
+
+router.delete('/:testId', async (req, res) => {
+    const {id:courseId, testId} = req.params;
+    await deleteTest(testId);
+    res.redirect(`/courses/${courseId}/tests`);
 })
 
 module.exports = router;

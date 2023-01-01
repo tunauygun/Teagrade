@@ -5,6 +5,17 @@
 <h5>LastName: <span><%= student.lastname %></span></h5>
 <h5>Student Number: <span><%= student.number %></span></h5>
 
+<div class="btn-group">
+    <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Manage Student
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/courses/<%=courseId%>/students/<%= student._id%>/edit">Edit</a></li>
+        <form action="/courses/<%=courseId%>/students/<%=student._id%>?_method=DELETE" method="POST" novalidate>
+            <button class="dropdown-item">Delete</button>
+        </form>
+    </ul>
+</div>
 
 <% for (let submission of student.submissions){ %>
     <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
@@ -14,7 +25,7 @@
                 <p class="">Score: <%= submission.score %></p>
             </div>
             <div class="my-auto col">
-                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/submissions/<%= submission._id%>/show">Details</a>
+                <a class="btn btn-secondary my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/tests/<%=submission.test._id%>/submissions/<%= submission._id%>">Details</a>
             </div>
         </div>
     </div>
