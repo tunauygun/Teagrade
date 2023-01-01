@@ -3,13 +3,12 @@ const Schema = mongoose.Schema;
 
 const SubmissionSchema = new Schema({
     student: {
-        required: true,
         type: Schema.Types.ObjectId,
         required: true
     },
-    studentAnswers: {
-        type: String,
-        required: true
+    studentAnswersArray: {
+        required: true,
+        type: [String]
     },
     test: {
         required: true,
@@ -20,7 +19,10 @@ const SubmissionSchema = new Schema({
         required: true,
         type: Number,
     }],
-    score: Number
+    score: {
+        type: Number,
+        required: true
+    }
 
 });
 

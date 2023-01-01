@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="row mt-5">
+    <h1 class="">Create New Submission</h1>
+    <div class="my-3">
+        <label for="formFile" class="form-label">Select the submission bubble sheet:</label>
+        <input class="form-control" type="file" id="fileInput">
+    </div>
+</div>
+
+<img class="mx-auto d-block" id="inputImage" width="500" height="500">
+<div class="modal fade" id="confirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmationModalLabel">Confirm Results</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="confirmationImages">
+                <div class="row">
+                    <div class="col">
+                        <p>Student number section:</p>
+                        <canvas id='studentNumberSection'></canvas>
+                    </div>
+                    <div class="col">
+                        <p>Student answers left:</p>
+                        <canvas id='studentAnswerLeftSection'></canvas>
+                    </div>
+                    <div class="col">
+                        <p>Student answers right:</p>
+                        <canvas id='studentAnswerRightSection'></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form action="/courses/<%=courseId%>/tests/<%=testId%>/submissions" method="POST" novalidate>
+                    <input id="studentNumberInput" type="hidden" name ="submission[studentNumber]" value=""/>
+                    <input id="studentAnswersInput" type="hidden" name ="submission[studentAnswers]" value=""/>
+                    <button class="btn btn-success">Confirm</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script async src="/js/opencv.js"></script>
+<script src="/js/bubbleSheetReader.js"></script>
+<script>
+    let fileInput = document.getElementById('fileInput');
+    let studentNumberInput = document.getElementById('studentNumberInput');
+    let studentAnswersInput = document.getElementById('studentAnswersInput');
+    let inputImage;
+    fileInput.addEventListener('change', (e) => {
+        inputImage = document.getElementById('inputImage');
+        inputImage.src = URL.createObjectURL(e.target.files[0])
+        inputImage.onload = function () {
+            let questions = 40;
+            let choices = 5;
+            let results = readBubbleSheet(inputImage, questions, choices);
+            studentAnswersInput.value = results[0];
+            studentNumberInput.value = results[1];
+            var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            myModal.show();
+        };
+    }, false);
+</script>

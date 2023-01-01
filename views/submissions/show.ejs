@@ -1,0 +1,37 @@
+<% layout('layouts/boilerplate')%>
+<h1 class="my-5"> Submission Information</h1>
+<h5>Student: <span><%= submission.student.firstname %> <%= submission.student.lastname %></span></h5>
+<h5>Test: <span><%= test.name %></span></h5>
+<h5>Score: <span><%= submission.score %></span></h5>
+
+
+<form action="/courses/<%=courseId%>/tests/<%=test._id%>/submissions/<%=submission._id%>?_method=DELETE" method="POST" novalidate>
+    <button class="btn btn-danger">Delete Submission</button>
+</form>
+
+
+<h5 class="mt-4">Details:</h5>
+<div class="row mx-2 my-3">
+    <div class="col">
+        <p class="">Question #:</p>
+    </div>
+    <div class="col">
+        <p class="">Student Answer:</p>
+    </div>
+    <div class="col">
+        <p class="">Correct Answer:</p>
+    </div>
+</div>
+<% for (let i=0; i<test.answerKey.length; i++){ %>
+    <div class="row mx-2 my-3">
+        <div class="col">
+            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%= i+1 %></p>
+        </div>
+        <div class="col">
+            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=submission.studentAnswersArray[i]%></p>
+        </div>
+        <div class="col">
+            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=test.answerKey[i]%></p>
+        </div>
+    </div>
+<% } %>

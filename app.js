@@ -13,6 +13,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const courseRoutes = require('./routes/courses');
 const studentRoutes = require('./routes/students');
+const submissionRoutes = require('./routes/submissions')
 const testRoutes = require('./routes/tests');
 const userRoutes = require('./routes/user');
 const passport = require('passport');
@@ -62,7 +63,8 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/courses/:id/students', studentRoutes)
+app.use('/courses/:id/tests/:testId/submissions', submissionRoutes);
+app.use('/courses/:id/students', studentRoutes);
 app.use('/courses/:id/tests', testRoutes)
 app.use('/courses', courseRoutes);
 app.use('/', userRoutes);
