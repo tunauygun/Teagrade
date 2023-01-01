@@ -1,8 +1,18 @@
 <% layout('layouts/boilerplate')%>
-<h1 class="my-5"> Test Information</h1>
-<h5>Name: <span><%= test.name %></span></h5>
-<h5>Answer Key: <span><%= test.answersString %></span></h5>
-<h5>Number of Submissions: <span><%= test.submissions.length %></span></h5>
+<h1 class="mt-5 mb-4"> Test Information</h1>
+
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Name:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-4"><%= test.name %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Answer Key:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-5"><%= test.answersString %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Number of Submissions:</dt>
+    <dd class="col-md-9 col-sm-7 col-xs-5"><%= test.submissions.length %></dd>
+</dl>
 
 <a class="btn btn-primary my-1 text-right" href="/courses/<%=courseId%>/tests/<%=test._id%>/submissions/new">Create New Submission</a>
 <div class="btn-group ms-2">

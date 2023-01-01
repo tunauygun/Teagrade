@@ -1,37 +1,46 @@
 <% layout('layouts/boilerplate')%>
 <h1 class="my-5"> Submission Information</h1>
-<h5>Student: <span><%= submission.student.firstname %> <%= submission.student.lastname %></span></h5>
-<h5>Test: <span><%= test.name %></span></h5>
-<h5>Score: <span><%= submission.score %></span></h5>
 
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Student Name:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-4"><%= submission.student.firstname %> <%= submission.student.lastname %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Test Name:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-5"><%= test.name %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Score:</dt>
+    <dd class="col-md-9 col-sm-7 col-xs-5"><%= submission.score %></dd>
+</dl>
 
 <form action="/courses/<%=courseId%>/tests/<%=test._id%>/submissions/<%=submission._id%>?_method=DELETE" method="POST" novalidate>
     <button class="btn btn-danger">Delete Submission</button>
 </form>
 
 
-<h5 class="mt-4">Details:</h5>
-<div class="row mx-2 my-3">
+<h5 class="mt-5">Details:</h5>
+<div class="row mx-2 mt-4">
     <div class="col">
-        <p class="">Question #:</p>
+        <strong class="">Question #:</strong>
     </div>
     <div class="col">
-        <p class="">Student Answer:</p>
+        <strong class="">Student Answer:</strong>
     </div>
     <div class="col">
-        <p class="">Correct Answer:</p>
+        <strong class="">Correct Answer:</strong>
     </div>
 </div>
 <% for (let i=0; i<test.answerKey.length; i++){ %>
     <div class="row mx-2 my-3">
         <div class="col">
-            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%= i+1 %></p>
+            <strong class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%= i+1 %></strong>
         </div>
         <div class="col">
-            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=submission.studentAnswersArray[i]%></p>
+            <strong class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=submission.studentAnswersArray[i]%></strong>
         </div>
         <div class="col">
-            <p class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=test.answerKey[i]%></p>
+            <strong class="<%=submission.resultsArray[i]===1?"text-success":"text-danger"%>"><%=test.answerKey[i]%></strong>
         </div>
     </div>
 <% } %>

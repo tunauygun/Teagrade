@@ -1,9 +1,19 @@
 <% layout('layouts/boilerplate')%>
 
 <h1 class="my-5"> Student Information</h1>
-<h5>First Name: <span><%= student.firstname %></span></h5>
-<h5>LastName: <span><%= student.lastname %></span></h5>
-<h5>Student Number: <span><%= student.number %></span></h5>
+
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">First Name:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-4"><%= student.firstname %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Last Name:</dt>
+    <dd class="col-md-9  col-sm-7 col-xs-5"><%= student.lastname %></dd>
+</dl>
+<dl class="row">
+    <dt class="col-md-3 col-sm-5 col-xs-8">Student Number:</dt>
+    <dd class="col-md-9 col-sm-7 col-xs-5"><%= student.number %></dd>
+</dl>
 
 <div class="btn-group">
     <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

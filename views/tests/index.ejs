@@ -19,23 +19,13 @@
 
 
 <% if (tests.length > 0){ %>
-
     <% for (let test of tests){ %>
     <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
         <div class="row mx-2 my-3">
-            <div class="col-lg-10 col-md-9 col-sm-8 col-6 my-auto">
-                <a style="display:block" href="/courses/<%=courseId%>/tests/<%= test._id%>">
-                    <h5 class=""><%= test.name %> </h5>
-                </a>
-                <p class=""><%= test.answerKey.length %> questions</p>
+                <a href="/courses/<%=courseId%>/tests/<%= test._id%>" class="card-title d-block stretched-link mb-2" style="text-decoration: none; color: inherit;"><h4><%= test.name %></h4> </a>
+                <p class="mb-0"><%= test.answerKey.length %> questions</p>
                 <p class=""><%= test.submissions.length %> submissions</p>
-            </div>
-            <div class="my-auto col">
-                <a class="btn btn-warning my-1 mx-auto d-block text-right" href="/courses/<%=courseId%>/tests/<%= test._id%>/edit">Edit</a>
-                <a class="btn btn-danger mx-auto d-block text-right" href="/courses/<%=courseId%>/tests/<%= test._id %>">Delete</a>
-            </div>
         </div>
     </div>
     <% } %>
-
 <% } %>
