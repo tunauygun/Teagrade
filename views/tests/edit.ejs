@@ -11,7 +11,7 @@
             </div>
 
             <label for="customRange2" class="form-label mt-3">Number of Questions: <output id="questionNumberOutputId"><%=test.answerKey.length%></output></label>
-            <input class="form-range mb-3" type="range" id="questionNumberInputId" value=<%=test.answerKey.length%> min="1" max="25" required onchange="questionNumberInputHandler()" questionNumberInputHandler oninput=questionNumberInputHandler >
+            <input class="form-range mb-3" type="range" id="questionNumberInputId" value=<%=test.answerKey.length%> min="1" max="40" required onchange="questionNumberInputHandler()" questionNumberInputHandler oninput=questionNumberInputHandler >
 
             <label class="form-label mt-3">Answer Key</label>
             <p> Enter the answer key for the test questions below </p>
@@ -34,6 +34,9 @@
 
                             <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>D" value="D" autocomplete="off" required <%=test.answerKey[i-1] === "D"? "checked": ""%>>
                             <label class="btn btn-outline-primary" for="q<%=i%>D">D</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[<%=i%>]" id="q<%=i%>E" value="E" autocomplete="off" required <%=test.answerKey[i-1] === "E"? "checked": ""%>>
+                            <label class="btn btn-outline-primary" for="q<%=i%>E">E</label>
                         </div>
                     </div>
                 </div>
@@ -78,6 +81,9 @@
 
                             <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}D" value="D" autocomplete="off" required>
                             <label class="btn btn-outline-primary" for="q${i}D">D</label>
+
+                            <input type="radio" class="btn-check" name="answerKey[${i}]" id="q${i}E" value="E" autocomplete="off" required>
+                            <label class="btn btn-outline-primary" for="q${i}E">E</label>
                         </div>
                     </div>
                   `;

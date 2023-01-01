@@ -19,6 +19,6 @@ module.exports.studentSchema = Joi.object({
 module.exports.testSchema = Joi.object({
     test: Joi.object({
         name: Joi.string().required(),
-        answerKey: Joi.array().required().min(1).max(25)
+        answerKey: Joi.array().required().min(1).max(40)
     }).required()
 })
