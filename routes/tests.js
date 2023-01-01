@@ -34,7 +34,8 @@ router.post('/', isLoggedIn, validateTest, catchAsync(async (req, res) => {
 
 router.put('/:testId', validateTest, async (req, res) => {
     const {id , testId} = req.params;
-    const test = await Test.findByIdAndUpdate(testId, {...req.body.test}).populate({
+    await Test.findByIdAndUpdate(testId, {...req.body.test})
+    const test = await Test.findById(testId).populate({
         path: 'submissions',
         populate: { path: 'student', model: 'Student'}
     });
