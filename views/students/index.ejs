@@ -19,7 +19,7 @@
 <% if (students.length > 0){ %>
 
 <% for (let student of students){ %>
-    <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
+    <div style="background-color: #e0e8ff52;" class="card container-fluid border border-primary rounded shadow my-3">
       <div class="row mx-2 my-3">
           <a style="text-decoration: none; color: inherit;" href="/courses/<%=courseId%>/students/<%= student._id%>"><h4 class="d-block stretched-link mb-2"><%= student.firstname %> <%= student.lastname %></h4></a>
           <p class="">Student #: <%= student.number %></p>
