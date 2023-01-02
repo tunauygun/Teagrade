@@ -1,6 +1,4 @@
 const ExpressError = require('./utils/ExpressError');
-const Course = require('./models/course');
-const Student = require('./models/course');
 const {courseSchema, studentSchema, testSchema} = require('./schemas.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -8,6 +6,16 @@ module.exports.isLoggedIn = (req, res, next) => {
         req.session.returnTo = req.originalUrl;
         req.flash("error", "You must be signed in first!");
         return res.redirect('/login');
+    }
+    next();
+}
+
+module.exports.isAuthorized = async (req, res, next) => {
+    const {id: courseId} = req.params;
+    if (!req.user.courses.includes(courseId)) {
+        req.session.returnTo = req.originalUrl;
+        req.flash("error", "You don't have permission to access this page!");
+        return res.redirect('/courses');
     }
     next();
 }

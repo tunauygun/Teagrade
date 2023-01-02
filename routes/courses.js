@@ -2,7 +2,7 @@ const express = require('express');
 const Course = require('../models/course');
 const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
-const {isLoggedIn, validateCourse} = require('../middleware');
+const {isLoggedIn, validateCourse, isAuthorized} = require('../middleware');
 const {deleteCourse} = require("../utils/delete");
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.post('/', isLoggedIn, validateCourse, catchAsync(async (req, res) => {
     res.redirect(`/courses/${course._id}`)
 }))
 
-router.get('/:id', catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, isAuthorized, catchAsync(async (req, res) => {
     const course = await Course.findById(req.params.id);
     if(!course){
         req.flash('error', 'Cannot find the requested course!');
@@ -35,7 +35,7 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('courses/show', { course });
 }))
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthorized, async (req, res) => {
     const course = await Course.findById(req.params.id);
     if(!course){
         req.flash('error', 'Cannot find the requested course!');
@@ -44,7 +44,7 @@ router.get('/:id/edit', async (req, res) => {
     res.render('courses/edit', { course });
 })
 
-router.put('/:id', validateCourse, async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthorized, validateCourse, async (req, res) => {
     const { id } = req.params;
     const course = await Course.findByIdAndUpdate(id, { ...req.body.course })
     req.flash('success', 'Successfully updated course!');
@@ -52,7 +52,7 @@ router.put('/:id', validateCourse, async (req, res) => {
 
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthorized, async (req, res) => {
     const {id} = req.params;
     await deleteCourse(id);
     res.redirect('/courses');

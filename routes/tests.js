@@ -1,27 +1,28 @@
 const express = require('express');
 const Course = require('../models/course');
-const User = require('../models/user');
 const catchAsync = require('../utils/catchAsync');
-const {isLoggedIn, validateTest, validateStudent} = require('../middleware');
+const {isLoggedIn, validateTest, isAuthorized} = require('../middleware');
 const Test = require("../models/test");
-const Student = require("../models/student");
 const Submission = require("../models/submission");
 const {deleteTest} = require("../utils/delete");
 
 const router = express.Router({mergeParams: true});
 
-router.get('/',isLoggedIn, catchAsync( async (req, res) => {
+router.use(isLoggedIn);
+router.use(isAuthorized);
+
+router.get('/', catchAsync( async (req, res) => {
     const {tests} = await Course.findById(req.params.id).populate('tests');
     const courseId = req.params.id;
     res.render('tests/index', {courseId, tests});
 }));
 
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', (req, res) => {
     const courseId = req.params.id;
     res.render('tests/new', {courseId});
 });
 
-router.post('/', isLoggedIn, validateTest, catchAsync(async (req, res) => {
+router.post('/', validateTest, catchAsync(async (req, res) => {
     const {name, answerKey} = req.body.test;
     const course = await Course.findById(req.params.id)
     const test = new Test({name, course, answerKey});
@@ -32,7 +33,7 @@ router.post('/', isLoggedIn, validateTest, catchAsync(async (req, res) => {
     res.redirect(`/courses/${course._id}/tests`);
 }));
 
-router.put('/:testId', validateTest, async (req, res) => {
+router.put('/:testId', validateTest, catchAsync(async (req, res) => {
     const {id , testId} = req.params;
     await Test.findByIdAndUpdate(testId, {...req.body.test})
     const test = await Test.findById(testId).populate({
@@ -49,9 +50,9 @@ router.put('/:testId', validateTest, async (req, res) => {
     }
     req.flash('success', 'Successfully updated Test!');
     res.redirect(`/courses/${id}/tests/`);
-})
+}));
 
-router.get('/:testId/edit', async (req, res) => {
+router.get('/:testId/edit', catchAsync(async (req, res) => {
     const {id , testId} = req.params;
     const test = await Test.findById(testId);
     if(!test){
@@ -59,9 +60,9 @@ router.get('/:testId/edit', async (req, res) => {
         return res.redirect(`/courses/${id}/tests`);
     }
     res.render('tests/edit', {test, id, testId});
-})
+}));
 
-router.get('/:testId', async (req, res) => {
+router.get('/:testId', catchAsync(async (req, res) => {
     const test = await Test.findById(req.params.testId).populate({
         path: 'submissions',
         populate: { path: 'student', model: 'Student'}
@@ -77,12 +78,12 @@ router.get('/:testId', async (req, res) => {
     }
     test.answersString = answers;
     res.render('tests/show', {test, courseId});
-})
+}));
 
-router.delete('/:testId', async (req, res) => {
+router.delete('/:testId', catchAsync(async (req, res) => {
     const {id:courseId, testId} = req.params;
     await deleteTest(testId);
     res.redirect(`/courses/${courseId}/tests`);
-})
+}));
 
 module.exports = router;
