@@ -77,6 +77,20 @@ router.get('/:testId', catchAsync(async (req, res) => {
         answers += i+1 + test.answerKey[i]+ " "
     }
     test.answersString = answers;
+
+    let csvLines = ["Student Number,First Name,Last Name,Score,Answers"];
+    for (let i = 0; i < test.submissions.length; i++) {
+        let submission = test.submissions[i];
+        let record = "";
+        record += submission.student.number + ",";
+        record += submission.student.firstname + ",";
+        record += submission.student.lastname + ",";
+        record += submission.score + ",";
+        record += submission.studentAnswersArray.join(" ");
+        csvLines.push(record);
+    }
+    test.csv = csvLines.join("CSVNEWLINE");
+
     res.render('tests/show', {test, courseId});
 }));
 

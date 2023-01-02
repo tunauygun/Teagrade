@@ -24,12 +24,12 @@
     </button>
     <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="/courses/<%=courseId%>/tests/<%= test._id%>/edit">Edit</a></li>
+        <button id="export" class="dropdown-item">Export to CSV</button>
         <form action="/courses/<%=courseId%>/tests/<%=test._id%>?_method=DELETE" method="POST" novalidate>
             <button class="dropdown-item">Delete</button>
         </form>
     </ul>
 </div>
-
 
 <% for (let submission of test.submissions){ %>
     <div style="background-color: #e0e8ff52;" class="container-fluid border border-primary rounded shadow my-3">
@@ -44,3 +44,20 @@
         </div>
     </div>
 <% } %>
+
+<script>
+    const downloadCSV = () => {
+        const testname = "<%=test.name%>";
+        let csv = "<%=test.csv%>";
+        csv = csv.replace("CSVNEWLINE", "\n");
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.setAttribute('href', url)
+        a.setAttribute('download', `Test_${testname}_Results.csv`);
+        a.click()
+    }
+
+    const exportButton = document.getElementById('export');
+    exportButton.addEventListener('click', downloadCSV);
+</script>
