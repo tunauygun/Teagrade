@@ -72,7 +72,6 @@ Once the server is running, open your browser and go to:
 http://localhost:3000
 ```
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [product-screenshot]: images/screenshot.png
